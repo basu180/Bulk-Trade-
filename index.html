@@ -1,453 +1,289 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Bulk Trade Dashboard — Quiz</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BULK TRADE QUIZ</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Poppins", sans-serif;
+    }
 
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    body {
+      height: 100vh;
+      background: linear-gradient(135deg, #5b4b8a, #7e6bc4, #9a8be0);
+      background-size: 400% 400%;
+      animation: gradientMove 10s ease infinite;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
 
-<style>
-  :root{
-    --bg1: #0f1724;
-    --violet: #6a11cb;
-    --blue: #2575fc;
-    --glass: rgba(255,255,255,0.06);
-    --muted: rgba(255,255,255,0.75);
-    --accent: #9d7bff;
-  }
-  *{box-sizing:border-box}
-  html,body{height:100%;margin:0;font-family:'Poppins',system-ui,Arial;color:var(--muted);background:#07132a;}
+    @keyframes gradientMove {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
 
-/* Animated Violet-Blue gradient background */
-  body{
-    background: linear-gradient(120deg, #1f3b8a 0%, #4b1f86 30%, #1ea6ff 70%);
-    background-size:400% 400%;
-    animation: bgShift 14s ease infinite;
-    overflow:hidden;
-  }
-  @keyframes bgShift{
-    0%{background-position:0% 50%}
-    50%{background-position:100% 50%}
-    100%{background-position:0% 50%}
-  }
+    /* Top Navbar */
+    .navbar {
+      width: 100%;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 30px;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(15px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+      color: white;
+    }
 
-/* App layout */
-  .app {
-    min-height:100vh;
-    display:flex;
-    flex-direction:column;
-  }
+    .navbar-left h2 {
+      font-family: "Orbitron", sans-serif;
+      font-size: 18px;
+      letter-spacing: 1px;
+    }
 
-/* TOP NAV */
-  .topbar{
-    height:64px;
-    display:flex;
-    align-items:center;
-    gap:16px;
-    padding:0 20px;
-    background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
-    border-bottom:1px solid rgba(255,255,255,0.03);
-    backdrop-filter: blur(6px);
-    color:rgba(255,255,255,0.92);
-    z-index:10;
-  }
-  .brand {
-    display:flex;
-    align-items:center;
-    gap:12px;
-    font-family:'Orbitron',sans-serif;
-    font-size:18px;
-    letter-spacing:1px;
-    color:#fff;
-  }
-  .brand .logo {
-    width:36px; height:36px; border-radius:8px; overflow:hidden; display:inline-block; background:rgba(255,255,255,0.06); padding:6px;
-    box-shadow: 0 6px 18px rgba(0,0,0,0.4);
-  }
-  .brand .logo img { width:100%; height:100%; object-fit:cover; display:block; border-radius:6px; }
+    .navbar-right {
+      font-size: 14px;
+      color: #c7ffd8;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
 
-  .top-actions{ margin-left:auto; display:flex; gap:10px; align-items:center; }
-  .live-dot{ width:10px; height:10px; border-radius:50%; background:#4ade80; box-shadow:0 0 8px rgba(74,222,128,0.9); }
-  .top-actions .label{ font-size:13px; color:rgba(255,255,255,0.9); }
+    .live-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background-color: #00ff8c;
+      animation: pulse 1.5s infinite;
+    }
 
-/* Main area */
-  .main {
-    flex:1;
-    display:flex;
-    gap:22px;
-    padding:28px;
-    align-items:flex-start;
-    justify-content:center;
-  }
+    @keyframes pulse {
+      0%, 100% { opacity: 0.6; transform: scale(1); }
+      50% { opacity: 1; transform: scale(1.5); }
+    }
 
-/* Sidebar */
-  .sidebar{
-    width:260px;
-    background:linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
-    border-radius:12px;
-    padding:18px;
-    box-shadow:0 12px 40px rgba(2,6,23,0.6);
-    border:1px solid rgba(255,255,255,0.03);
-    color:var(--muted);
-    height:520px;
-  }
-  .stat { margin-bottom:14px; }
-  .stat h3{ margin:0; font-size:14px; color:#fff; }
-  .stat p{ margin:6px 0 0; font-size:13px; color:rgba(255,255,255,0.8);}
+    /* Dashboard Quiz Panel */
+    .dashboard {
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 20px;
+      box-shadow: 0 0 40px rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(20px);
+      width: 400px;
+      padding: 30px;
+      text-align: center;
+      color: white;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      margin-top: 100px;
+    }
 
-/* Workspace / Quiz Card */
-  .workspace{
-    flex:1;
-    max-width:720px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-  }
+    h1 {
+      font-family: "Orbitron", sans-serif;
+      font-size: 26px;
+      margin-bottom: 20px;
+      letter-spacing: 1px;
+    }
 
-  .quiz-card{
-    width:100%;
-    background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));
-    border-radius:14px;
-    padding:22px;
-    position:relative;
-    box-shadow: 0 18px 60px rgba(6,24,50,0.6);
-    border:1px solid rgba(255,255,255,0.04);
-    overflow:hidden;
-  }
+    button {
+      background: rgba(255, 255, 255, 0.2);
+      border: none;
+      border-radius: 10px;
+      padding: 10px 20px;
+      margin: 8px;
+      cursor: pointer;
+      color: white;
+      transition: all 0.3s;
+      font-size: 16px;
+    }
 
-  .quiz-card::before{
-    content:'';
-    position:absolute; inset:-2px;
-    border-radius:16px;
-    background: linear-gradient(90deg, rgba(157,123,255,0.12), rgba(0,224,255,0.09));
-    z-index:0;
-    filter: blur(22px);
-    pointer-events:none;
-    mix-blend-mode: screen;
-    opacity:0.9;
-  }
+    button:hover {
+      background: rgba(255, 255, 255, 0.4);
+      box-shadow: 0 0 15px rgba(255, 255, 255, 0.4);
+    }
 
-  .panel{
-    position:relative; z-index:2;
-  }
-  .q-top{ display:flex; justify-content:space-between; align-items:center; gap:12px; color:rgba(255,255,255,0.9); }
-  .q-title{ margin-top:12px; font-size:20px; font-weight:700; color:#fff; }
-  .choices{ margin-top:14px; display:grid; gap:12px; grid-template-columns:1fr 1fr; }
-  @media(max-width:780px){ .choices{ grid-template-columns:1fr } .sidebar{display:none} }
+    .hidden {
+      display: none;
+    }
 
-  .choice {
-    background:#fff;
-    color:#061424;
-    padding:12px;
-    border-radius:10px;
-    cursor:pointer;
-    font-weight:600;
-    box-shadow:0 8px 22px rgba(2,6,23,0.12);
-    transition: transform .12s, box-shadow .12s, background .12s;
-  }
-  .choice:hover{ transform: translateY(-4px); box-shadow:0 18px 40px rgba(2,6,23,0.18); }
-  .choice.selected{ background:linear-gradient(90deg,var(--accent), #7fd3ff); color:#021; box-shadow:0 20px 60px rgba(157,123,255,0.18); }
+    .fade-in {
+      animation: fadeIn 0.6s ease-in-out;
+    }
 
-  .controls{ display:flex; justify-content:space-between; align-items:center; margin-top:18px; gap:8px; }
-  .btn{ padding:10px 16px; border-radius:10px; border:0; cursor:pointer; font-weight:700; background:linear-gradient(90deg,var(--accent), #bca1ff); color:#041017; box-shadow:0 10px 30px rgba(157,123,255,0.12); }
-  .btn.ghost{ background:transparent; color:var(--muted); border:1px solid rgba(255,255,255,0.04); }
-
-  .result { margin-top:14px; display:none; color: #fff; }
-
-/* lighting spot */
-  .lighting { position:absolute; inset:0; pointer-events:none; z-index:1 }
-  .spot{
-    position:absolute;
-    width:600px; height:600px; border-radius:50%;
-    left:calc(50% - 300px); top:-180px;
-    background: radial-gradient(circle at 50% 40%, rgba(255,255,255,0.28), rgba(255,255,255,0.06) 20%, transparent 45%);
-    filter: blur(36px) saturate(1.05);
-    opacity:0; transform: scale(0.92);
-  }
-  @keyframes lightPulse { 0%{opacity:0; transform:scale(0.92)} 10%{opacity:0.78; transform:scale(1.02)} 60%{opacity:0.28; transform:scale(1.06)} 100%{opacity:0; transform:scale(1.12)} }
-
-  .small{ font-size:13px; color:var(--muted) }
-  .top-stat{ display:flex; gap:12px; align-items:center }
-  .chip{ background:rgba(255,255,255,0.04); padding:6px 10px; border-radius:10px; font-weight:700; color:#fff; }
-
-</style>
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
 </head>
 <body>
-  <div class="app">
-    <div class="topbar">
-      <div class="brand">
-        <span class="logo">
-          <!-- Embedded logo (Base64 PNG) -->
-          <img alt="logo" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAWgAAABoCAYAAABu1FJZAAAACXBIWXMAAAsTAAALEwEAmpwYAAAKT2lDQ1BQaG90b3Nob3AgSUNDIHByb2ZpbGUAAHjanZnVcdtXHcX/+/7m7dzzfz8xkzZk5rJmW0h7Q0t1u9r0u1ut2q+tf6q6t2rN3b3l2d93k3Z2b2d3d3cH8AQ1oBEiI7YARgVmGgJ0qgE0UQhE8gG7QbQYwQq3v3v3v+7e+99z7n3n3n+f7lM0ZB5EwAAIABJREFUeJzt3Qe8JdW9B/B7h6Q2KkM4gqQ3o0p0lq1Zt8v3pVbduu6rV1q9v6v7v5r1u1t1Qt1o6q7u7pVX3v+3u++9z0wq0k0k0k0k0k0k0k0k0k0k0n0g3wGkGgqJAAj3b9+v8wSgCAIAgC0iIMs0gQACAEAgCAIAgCAIAgCAIAgCAIAgCwq0a7e3t3/23u8wH1A4AQCgCADoQp8j8oQAAQAAQAAQAAQAAQAAQAAQAAQABgO0AUAoAgLq8u7v/9r9vX1+f0kEA0C8AAOBq6u7u7t0eDRw0QAAQCAIAgCAGgIIBo0+2wQAAAgCAIAgCAGgIIBo0+2wQAAAgCAIAgCAGgIIBo0+2wQAAAgCAIAgCAGgIIBo0+2wQAAAgCAIAgCAGgIIBo0+2wQAAAgCAIBgL0AUAoAgCk8fHxcXFx8fHxcXFx8fHxcXFx8fHxcXFx8fHxcXFx8fHxcXFx8fHxcXFx8fHxcXFx8fHxcX1/8bq6+u7u7u7u7u7u7u7u7u7u7u7s7o2wQAAAgCAIAgCAIAgCwq0Xg8HBw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8Pgr+f3z9vDg4ODg4ODg4ODg4ODg4ODg4ODg4ODg4ODg4ODg4ODg4ODg4ODg4ODg4ODg4ODg4ODg4ODg4N/jV0kGgk3k8ZgAAgCAIAgCAIBgL0A4A0QwAAAABJRU5ErkJggg==">
-        </span>
-        <span>Bulk Trade Dashboard</span>
-      </div>
-
-      <div class="top-actions">
-        <div class="live-dot" title="Live"></div>
-        <div class="label">LIVE</div>
-      </div>
+  <!-- Top Navbar -->
+  <div class="navbar">
+    <div class="navbar-left">
+      <h2>Bulk Trade Dashboard</h2>
     </div>
-
-    <div class="main">
-      <!-- Sidebar -->
-      <aside class="sidebar" id="sidebar">
-        <div class="stat">
-          <h3>Progress</h3>
-          <p id="sidebar-progress">0 / 5 answered</p>
-        </div>
-        <div class="stat">
-          <h3>Best Score</h3>
-          <p id="sidebar-best">—</p>
-        </div>
-        <div class="stat">
-          <h3>Tips</h3>
-          <p>Use keys 1–4 for answers. Press Enter to move next.</p>
-        </div>
-        <div style="margin-top:auto; font-size:12px; color:rgba(255,255,255,0.6)">Made with ❤</div>
-      </aside>
-
-      <!-- Workspace -->
-      <section class="workspace">
-        <div class="quiz-card" id="quizCard">
-          <div class="lighting"><div class="spot" id="spot"></div></div>
-          <div class="panel">
-            <div class="q-top">
-              <div class="small" id="q-count">Question 1 / 5</div>
-              <div class="small" id="score">Score: 0</div>
-            </div>
-
-            <div id="questionArea" style="margin-top:8px;">
-              <!-- start state -->
-              <div style="margin-top:16px; text-align:center; color:rgba(255,255,255,0.9)">
-                <h2 style="margin:0;color:#fff;font-family:'Orbitron',sans-serif">BULK TRADE QUIZ</h2>
-                <p class="small" style="margin-top:10px">Click Enter Quiz to start</p>
-                <div style="margin-top:18px">
-                  <button id="startBtn" class="btn">Enter Quiz</button>
-                </div>
-              </div>
-            </div>
-
-            <div class="controls">
-              <div style="display:flex;gap:8px">
-                <button id="prevBtn" class="btn ghost">Previous</button>
-                <button id="skipBtn" class="btn ghost">Skip</button>
-              </div>
-              <div style="display:flex;gap:8px;align-items:center">
-                <div class="small" id="hint"></div>
-                <button id="nextBtn" class="btn">Next</button>
-              </div>
-            </div>
-
-            <div class="result" id="resultWrap"></div>
-          </div>
-        </div>
-      </section>
+    <div class="navbar-right">
+      <div class="live-dot"></div> LIVE
     </div>
   </div>
 
-<script>
-/* Dashboard Edition — JS logic */
-/* Questions (5) — taken from docs (no other changes) */
-const QUESTIONS = [
-  { id:1, q:'What is the primary purpose of the central limit order book (CLOB) in the BULK Exchange system?', choices:['To store historical price data','To match buy and sell orders efficiently','To control liquidity mining rewards','To verify on-chain transactions'], answer:1 },
-  { id:2, q:'Which mechanism does BULK Exchange use to prevent users from matching orders with themselves?', choices:['Anti-Liquidity Protocol','Self-Trade Prevention (STP)','Transaction Throttler','Order Guard System'], answer:1 },
-  { id:3, q:'The Mark Price on BULK Exchange is computed as a median of three components. Which one of these is NOT one of them?', choices:['Index Price','Fair Price','Funding Rate','Last Traded Price'], answer:3 },
-  { id:4, q:'What is the collateral currency used for all contracts on BULK Exchange?', choices:['BTC','USDT','BUSD','ETH'], answer:1 },
-  { id:5, q:'The design philosophy of BULK aims to deliver what kind of execution environment compared to existing on-chain systems?', choices:['Slower but more secure execution','Decentralized and unverified execution','Off-chain latency with on-chain integrity','Manual price verification system'], answer:2 }
-];
-
-const GRADIENTS = [
-  'linear-gradient(120deg,#1f3b8a 0%, #4b1f86 30%, #1ea6ff 70%)',
-  'linear-gradient(120deg,#4b1f86 0%, #2575fc 50%, #6a11cb 90%)',
-  'linear-gradient(120deg,#2b0f6a 0%, #6a11cb 40%, #1ea6ff 90%)',
-  'linear-gradient(120deg,#1e3b72 0%, #4b1f86 40%, #7fd3ff 90%)',
-  'linear-gradient(120deg,#2b1a6b 0%, #6a11cb 50%, #2575fc 100%)'
-];
-
-/* Element refs */
-const startBtn = document.getElementById('startBtn');
-const questionArea = document.getElementById('questionArea');
-const qCount = document.getElementById('q-count');
-const scoreEl = document.getElementById('score');
-const prevBtn = document.getElementById('prevBtn');
-const nextBtn = document.getElementById('nextBtn');
-const skipBtn = document.getElementById('skipBtn');
-const resultWrap = document.getElementById('resultWrap');
-const spot = document.getElementById('spot');
-const sidebarProgress = document.getElementById('sidebar-progress');
-const sidebarBest = document.getElementById('sidebar-best');
-const quizCard = document.getElementById('quizCard');
-
-let idx=0, selected=null, score=0, reviewed=[];
-
-/* SOUND: simple soft tones (use WebAudio) */
-const AudioContextClass = window.AudioContext || window.webkitAudioContext;
-let audioCtx=null;
-function ensureAudio(){ if(audioCtx) return; audioCtx = new AudioContextClass(); }
-function playSoft(freq=880, dur=0.08, type='sine', vol=0.06){
-  try{
-    ensureAudio();
-    const o = audioCtx.createOscillator();
-    const g = audioCtx.createGain();
-    o.type = type; o.frequency.value = freq;
-    o.connect(g); g.connect(audioCtx.destination);
-    g.gain.setValueAtTime(0.0001, audioCtx.currentTime);
-    g.gain.linearRampToValueAtTime(vol, audioCtx.currentTime + 0.01);
-    g.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + dur + 0.02);
-    o.start(audioCtx.currentTime); o.stop(audioCtx.currentTime + dur + 0.03);
-  }catch(e){}
-}
-
-/* render first screen (start) */
-startBtn.addEventListener('click', ()=> {
-  idx = 0; selected=null; score=0; reviewed=[];
-  document.body.style.background = GRADIENTS[idx%GRADIENTS.length];
-  renderQuestion();
-});
-
-/* render question card */
-function renderQuestion(){
-  const q = QUESTIONS[idx];
-  qCount.textContent = `Question ${idx+1} / ${QUESTIONS.length}`;
-  scoreEl.textContent = `Score: ${score}`;
-  sidebarProgress.textContent = `${reviewed.length} / ${QUESTIONS.length} answered`;
-
-  questionArea.innerHTML = `
-    <div>
-      <div class="q-title">${escapeHtml(q.q)}</div>
-      <div class="choices" id="choices">${q.choices.map((c,i)=> `<div class="choice" data-i="${i}" tabindex="0"><strong style="margin-right:8px">${i+1}.</strong>${escapeHtml(c)}</div>`).join('')}</div>
+  <!-- Dashboard Quiz -->
+  <div class="dashboard fade-in">
+    <h1>BULK TRADE QUIZ</h1>
+    <div id="quiz-container">
+      <p id="question"></p>
+      <div id="options"></div>
+      <button id="next-btn" class="hidden">Next</button>
+      <button id="restart-btn" class="hidden">Restart</button>
     </div>
-  `;
+    <button id="start-btn">Enter Quiz</button>
+  </div>
 
-  // change BG gradient smooth
-  document.body.style.transition = 'background 0.9s ease';
-  document.body.style.background = GRADIENTS[idx % GRADIENTS.length];
+  <!-- Background Music -->
+  <audio id="bgMusic" loop>
+    <source src="https://cdn.pixabay.com/download/audio/2023/03/01/audio_2cb4cb6b6f.mp3?filename=soft-piano-ambient-14279.mp3" type="audio/mpeg">
+  </audio>
 
-  // position and trigger spot pulse
-  positionSpot();
-  triggerPulse();
+  <script>
+    const questions = [
+      {
+        question: "What is the primary purpose of the central limit order book (CLOB) in the BULK Exchange system?",
+        options: [
+          "To store historical price data",
+          "To match buy and sell orders efficiently",
+          "To control liquidity mining rewards",
+          "To verify on-chain transactions"
+        ],
+        answer: 1
+      },
+      {
+        question: "Which mechanism does BULK Exchange use to prevent users from matching orders with themselves?",
+        options: [
+          "Anti-Liquidity Protocol",
+          "Self-Trade Prevention (STP)",
+          "Transaction Throttler",
+          "Order Guard System"
+        ],
+        answer: 1
+      },
+      {
+        question: "The Mark Price on BULK Exchange is computed as a median of three components. Which one of these is NOT one of them?",
+        options: [
+          "Index Price",
+          "Fair Price",
+          "Funding Rate",
+          "Last Traded Price"
+        ],
+        answer: 3
+      },
+      {
+        question: "What is the collateral currency used for all contracts on BULK Exchange?",
+        options: [
+          "BTC",
+          "USDT",
+          "BUSD",
+          "ETH"
+        ],
+        answer: 1
+      },
+      {
+        question: "The design philosophy of BULK aims to deliver what kind of execution environment compared to existing on-chain systems?",
+        options: [
+          "Slower but more secure execution",
+          "Decentralized and unverified execution",
+          "Off-chain latency with on-chain integrity",
+          "Manual price verification system"
+        ],
+        answer: 2
+      }
+    ];
 
-  // hook choices
-  document.querySelectorAll('.choice').forEach(el=>{
-    el.addEventListener('click', ()=>{
-      document.querySelectorAll('.choice').forEach(c=>c.classList.remove('selected'));
-      el.classList.add('selected');
-      selected = parseInt(el.dataset.i,10);
-      playSoft(1100,0.08,'sine',0.04);
-    });
-    el.addEventListener('keydown',(e)=>{ if(e.key==='Enter' || e.key===' ') el.click(); });
-  });
-}
+    const startBtn = document.getElementById("start-btn");
+    const nextBtn = document.getElementById("next-btn");
+    const restartBtn = document.getElementById("restart-btn");
+    const questionEl = document.getElementById("question");
+    const optionsEl = document.getElementById("options");
+    const quizContainer = document.getElementById("quiz-container");
+    const bgMusic = document.getElementById("bgMusic");
 
-/* position spot near top of card with subtle variations */
-function positionSpot(){
-  const offsets = ['45%','50%','55%','48%','52%'];
-  const ys = ['-180px','-140px','-160px','-200px','-150px'];
-  spot.style.left = `calc(${offsets[idx % offsets.length]} - 300px)`;
-  spot.style.top = ys[idx % ys.length];
-}
+    let currentQuestion = 0;
+    let score = 0;
 
-/* trigger pulse */
-function triggerPulse(){
-  spot.style.animation = 'none';
-  void spot.offsetWidth;
-  spot.style.animation = 'lightPulse 1.2s ease forwards';
-}
+    function startQuiz() {
+      startBtn.classList.add("hidden");
+      bgMusic.volume = 0.4;
+      bgMusic.play();
+      showQuestion();
+    }
 
-/* hooks for nav */
-nextBtn.addEventListener('click', onNext);
-prevBtn.addEventListener('click', onPrev);
-skipBtn.addEventListener('click', onSkip);
+    function showQuestion() {
+      quizContainer.classList.add("fade-in");
+      nextBtn.classList.add("hidden");
+      questionEl.textContent = questions[currentQuestion].question;
+      optionsEl.innerHTML = "";
+      questions[currentQuestion].options.forEach((opt, index) => {
+        const button = document.createElement("button");
+        button.textContent = opt;
+        button.onclick = () => selectAnswer(index);
+        optionsEl.appendChild(button);
+      });
+    }
 
-function onNext(){
-  const cur = QUESTIONS[idx];
-  if(selected !== null){
-    const correct = selected === cur.answer;
-    reviewed.push({id:cur.id, selected, correct});
-    if(correct){ score++; playSoft(1320,0.16,'triangle',0.06); }
-    else { playSoft(220,0.16,'sine',0.05); }
-  } else {
-    reviewed.push({id:cur.id, selected:null, correct:false});
-  }
-  selected = null;
-  idx++;
-  if(idx >= QUESTIONS.length){ showResult(); return; }
-  renderQuestion();
-}
+    function selectAnswer(selected) {
+      const correct = questions[currentQuestion].answer;
+      if (selected === correct) {
+        score++;
+        flash("#a4fba6");
+      } else {
+        flash("#fba4a4");
+      }
+      nextBtn.classList.remove("hidden");
+    }
 
-function onPrev(){
-  if(idx===0) return;
-  if(reviewed.length) reviewed.pop();
-  idx--; selected=null; renderQuestion();
-}
-function onSkip(){
-  reviewed.push({id:QUESTIONS[idx].id, selected:null, correct:false});
-  idx++; if(idx>=QUESTIONS.length){ showResult(); return; } renderQuestion();
-}
+    function flash(color) {
+      document.body.style.transition = "background 0.5s";
+      document.body.style.background = color;
+      setTimeout(() => {
+        document.body.style.background = "linear-gradient(135deg, #5b4b8a, #7e6bc4, #9a8be0)";
+      }, 500);
+    }
 
-/* show result */
-function showResult(){
-  // small success sound
-  playSoft(880,0.18,'triangle',0.08);
-  // calculate
-  const correctCount = reviewed.filter(r=>r.correct).length;
-  document.body.style.background = 'linear-gradient(120deg,#0f7a5a,#2575fc)';
-  resultWrap.style.display='block';
-  resultWrap.innerHTML = `
-    <div style="margin-top:12px;color:#fff;font-weight:800;font-size:18px">${correctCount} / ${QUESTIONS.length}</div>
-    <div class="small" style="margin-top:6px">${correctCount === QUESTIONS.length ? 'Perfect!' : (correctCount >= Math.ceil(QUESTIONS.length*0.7) ? 'Nice work!' : 'Keep practicing.')}</div>
-    <div style="margin-top:12px"><button id="retryBtn" class="btn">Retry</button> <button id="exportBtn" class="btn ghost">Export JSON</button></div>
-    <div style="margin-top:12px"><div style="font-weight:700;margin-bottom:8px">Review</div>
-      ${QUESTIONS.map((q,i=>{
-        const r = reviewed.find(x=>x.id===q.id) || {selected:null, correct:false};
-        const your = r.selected===null ? '<em>Skipped</em>' : q.choices[r.selected];
-        return `<div class="review-item"><div style="display:flex;justify-content:space-between"><div><strong>Q${i+1}.</strong> ${escapeHtml(q.q)}</div><div style="text-align:right">${your}</div></div><div class="small" style="margin-top:6px;color:rgba(255,255,255,0.8)">Correct: ${escapeHtml(q.choices[q.answer])}</div></div>`;
-      })).join('')}
-    </div>
-  `;
-  // update sidebar best score locally
-  const prevBest = parseInt(localStorage.getItem('bulk_best')||'0',10);
-  if(correctCount > prevBest){ localStorage.setItem('bulk_best', correctCount); sidebarBest.textContent = `${correctCount} / ${QUESTIONS.length}`; }
-  else { sidebarBest.textContent = prevBest ? `${prevBest} / ${QUESTIONS.length}` : '—'; }
+    function nextQuestion() {
+      currentQuestion++;
+      if (currentQuestion < questions.length) {
+        showQuestion();
+      } else {
+        showResult();
+      }
+    }
 
-  // actions
-  document.getElementById('retryBtn').addEventListener('click', ()=>{
-    resultWrap.style.display='none';
-    idx=0; selected=null; score=0; reviewed=[]; renderQuestion();
-  });
-  document.getElementById('exportBtn').addEventListener('click', ()=>{
-    const data = {score: correctCount, total: QUESTIONS.length, reviewed, date: new Date().toISOString()};
-    const b = new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
-    const url = URL.createObjectURL(b); const a=document.createElement('a'); a.href=url; a.download='bulk-quiz-result.json'; a.click(); URL.revokeObjectURL(url);
-  });
-}
+    function showResult() {
+      quizContainer.innerHTML = `<h2>Your Score: ${score} / ${questions.length}</h2>`;
+      restartBtn.classList.remove("hidden");
+      bgMusic.pause();
+    }
 
-/* keyboard */
-window.addEventListener('keydown',(e)=>{
-  // if quiz not started and Enter pressed, start
-  const startVisible = document.getElementById('startBtn') && document.getElementById('startBtn').offsetParent !== null;
-  if(startVisible){
-    if(e.key==='Enter') document.getElementById('startBtn').click();
-    return;
-  }
-  if(e.key>='1' && e.key<='9'){
-    const n = parseInt(e.key,10)-1;
-    const choices = document.querySelectorAll('.choice');
-    if(choices[n]) choices[n].click();
-  }
-  if(e.key==='Enter'){ nextBtn.click(); }
-});
+    function restartQuiz() {
+      currentQuestion = 0;
+      score = 0;
+      quizContainer.innerHTML = `
+        <p id="question"></p>
+        <div id="options"></div>
+        <button id="next-btn" class="hidden">Next</button>`;
+      showQuestion();
+      bgMusic.play();
+    }
 
-/* small helper */
-function escapeHtml(s){ return (''+s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
-
-/* init: set best from local */
-(function init(){
-  const pb = localStorage.getItem('bulk_best');
-  sidebarBest.textContent = pb ? `${pb} / ${QUESTIONS.length}` : '—';
-})();
-</script>
+    startBtn.onclick = startQuiz;
+    nextBtn.onclick = nextQuestion;
+    restartBtn.onclick = restartQuiz;
+  </script>
 </body>
 </html>
