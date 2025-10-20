@@ -32,12 +32,14 @@
     100%{background-position:0% 50%}
   }
 
-/* Page layout */
+/* App layout */
   .app {
     min-height:100vh;
     display:flex;
     flex-direction:column;
   }
+
+/* TOP NAV */
   .topbar{
     height:64px;
     display:flex;
@@ -48,15 +50,28 @@
     border-bottom:1px solid rgba(255,255,255,0.03);
     backdrop-filter: blur(6px);
     color:rgba(255,255,255,0.92);
+    z-index:10;
   }
-  .brand{
+  .brand {
+    display:flex;
+    align-items:center;
+    gap:12px;
     font-family:'Orbitron',sans-serif;
     font-size:18px;
     letter-spacing:1px;
     color:#fff;
   }
-  .top-actions{ margin-left:auto; display:flex; gap:10px; align-items:center; }
+  .brand .logo {
+    width:36px; height:36px; border-radius:8px; overflow:hidden; display:inline-block; background:rgba(255,255,255,0.06); padding:6px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.4);
+  }
+  .brand .logo img { width:100%; height:100%; object-fit:cover; display:block; border-radius:6px; }
 
+  .top-actions{ margin-left:auto; display:flex; gap:10px; align-items:center; }
+  .live-dot{ width:10px; height:10px; border-radius:50%; background:#4ade80; box-shadow:0 0 8px rgba(74,222,128,0.9); }
+  .top-actions .label{ font-size:13px; color:rgba(255,255,255,0.9); }
+
+/* Main area */
   .main {
     flex:1;
     display:flex;
@@ -81,7 +96,7 @@
   .stat h3{ margin:0; font-size:14px; color:#fff; }
   .stat p{ margin:6px 0 0; font-size:13px; color:rgba(255,255,255,0.8);}
 
-/* Center dashboard area (quiz card) */
+/* Workspace / Quiz Card */
   .workspace{
     flex:1;
     max-width:720px;
@@ -101,7 +116,6 @@
     overflow:hidden;
   }
 
-  /* neon border */
   .quiz-card::before{
     content:'';
     position:absolute; inset:-2px;
@@ -153,7 +167,6 @@
   }
   @keyframes lightPulse { 0%{opacity:0; transform:scale(0.92)} 10%{opacity:0.78; transform:scale(1.02)} 60%{opacity:0.28; transform:scale(1.06)} 100%{opacity:0; transform:scale(1.12)} }
 
-  /* small UI */
   .small{ font-size:13px; color:var(--muted) }
   .top-stat{ display:flex; gap:12px; align-items:center }
   .chip{ background:rgba(255,255,255,0.04); padding:6px 10px; border-radius:10px; font-weight:700; color:#fff; }
@@ -163,10 +176,17 @@
 <body>
   <div class="app">
     <div class="topbar">
-      <div class="brand">Bulk Trade Dashboard</div>
+      <div class="brand">
+        <span class="logo">
+          <!-- Embedded logo (Base64 PNG) -->
+          <img alt="logo" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAWgAAABoCAYAAABu1FJZAAAACXBIWXMAAAsTAAALEwEAmpwYAAAKT2lDQ1BQaG90b3Nob3AgSUNDIHByb2ZpbGUAAHjanZnVcdtXHcX/+/7m7dzzfz8xkzZk5rJmW0h7Q0t1u9r0u1ut2q+tf6q6t2rN3b3l2d93k3Z2b2d3d3cH8AQ1oBEiI7YARgVmGgJ0qgE0UQhE8gG7QbQYwQq3v3v3v+7e+99z7n3n3n+f7lM0ZB5EwAAIABJREFUeJzt3Qe8JdW9B/B7h6Q2KkM4gqQ3o0p0lq1Zt8v3pVbduu6rV1q9v6v7v5r1u1t1Qt1o6q7u7pVX3v+3u++9z0wq0k0k0k0k0k0k0k0k0k0k0n0g3wGkGgqJAAj3b9+v8wSgCAIAgC0iIMs0gQACAEAgCAIAgCAIAgCAIAgCAIAgCwq0a7e3t3/23u8wH1A4AQCgCADoQp8j8oQAAQAAQAAQAAQAAQAAQAAQAAQABgO0AUAoAgLq8u7v/9r9vX1+f0kEA0C8AAOBq6u7u7t0eDRw0QAAQCAIAgCAGgIIBo0+2wQAAAgCAIAgCAGgIIBo0+2wQAAAgCAIAgCAGgIIBo0+2wQAAAgCAIAgCAGgIIBo0+2wQAAAgCAIAgCAGgIIBo0+2wQAAAgCAIBgL0AUAoAgCk8fHxcXFx8fHxcXFx8fHxcXFx8fHxcXFx8fHxcXFx8fHxcXFx8fHxcXFx8fHxcXFx8fHxcX1/8bq6+u7u7u7u7u7u7u7u7u7u7u7s7o2wQAAAgCAIAgCAIAgCwq0Xg8HBw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8Pgr+f3z9vDg4ODg4ODg4ODg4ODg4ODg4ODg4ODg4ODg4ODg4ODg4ODg4ODg4ODg4ODg4ODg4ODg4ODg4N/jV0kGgk3k8ZgAAgCAIAgCAIBgL0A4A0QwAAAABJRU5ErkJggg==">
+        </span>
+        <span>Bulk Trade Dashboard</span>
+      </div>
+
       <div class="top-actions">
-        <div class="chip">Live</div>
-        <div class="small">v1.0</div>
+        <div class="live-dot" title="Live"></div>
+        <div class="label">LIVE</div>
       </div>
     </div>
 
@@ -185,7 +205,7 @@
           <h3>Tips</h3>
           <p>Use keys 1–4 for answers. Press Enter to move next.</p>
         </div>
-        <div style="margin-top:auto; font-size:12px; color:rgba(255,255,255,0.6)">Made with ❤ by Basu</div>
+        <div style="margin-top:auto; font-size:12px; color:rgba(255,255,255,0.6)">Made with ❤</div>
       </aside>
 
       <!-- Workspace -->
@@ -199,7 +219,7 @@
             </div>
 
             <div id="questionArea" style="margin-top:8px;">
-              <!-- injected -->
+              <!-- start state -->
               <div style="margin-top:16px; text-align:center; color:rgba(255,255,255,0.9)">
                 <h2 style="margin:0;color:#fff;font-family:'Orbitron',sans-serif">BULK TRADE QUIZ</h2>
                 <p class="small" style="margin-top:10px">Click Enter Quiz to start</p>
@@ -229,13 +249,13 @@
 
 <script>
 /* Dashboard Edition — JS logic */
-/* Questions (5) */
+/* Questions (5) — taken from docs (no other changes) */
 const QUESTIONS = [
-  { id:1, q:'What does \"bulk trade\" typically refer to?', choices:['Single-item retail orders','Large-quantity commodity shipments','Individual customer trades','Digital-only goods'], answer:1 },
-  { id:2, q:'Which document commonly accompanies a bulk shipment?', choices:['Invoice','Packing list','Warranty card','Coupon code'], answer:1 },
-  { id:3, q:'What is a Bill of Lading used for?', choices:['Prove ownership & shipment details','Calculate tariffs','Insurance valuation','Customer feedback'], answer:0 },
-  { id:4, q:'Which term indicates the buyer pays shipping?', choices:['FOB','CIF','EXW','DDP'], answer:2 },
-  { id:5, q:'Which metric indicates how well orders are fulfilled on time?', choices:['CTR','Fill rate','CPA','Bounce rate'], answer:1 }
+  { id:1, q:'What is the primary purpose of the central limit order book (CLOB) in the BULK Exchange system?', choices:['To store historical price data','To match buy and sell orders efficiently','To control liquidity mining rewards','To verify on-chain transactions'], answer:1 },
+  { id:2, q:'Which mechanism does BULK Exchange use to prevent users from matching orders with themselves?', choices:['Anti-Liquidity Protocol','Self-Trade Prevention (STP)','Transaction Throttler','Order Guard System'], answer:1 },
+  { id:3, q:'The Mark Price on BULK Exchange is computed as a median of three components. Which one of these is NOT one of them?', choices:['Index Price','Fair Price','Funding Rate','Last Traded Price'], answer:3 },
+  { id:4, q:'What is the collateral currency used for all contracts on BULK Exchange?', choices:['BTC','USDT','BUSD','ETH'], answer:1 },
+  { id:5, q:'The design philosophy of BULK aims to deliver what kind of execution environment compared to existing on-chain systems?', choices:['Slower but more secure execution','Decentralized and unverified execution','Off-chain latency with on-chain integrity','Manual price verification system'], answer:2 }
 ];
 
 const GRADIENTS = [
