@@ -1,232 +1,433 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>BULK TRADE QUIZ</title>
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Poppins', sans-serif;
-    }
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Bulk Trade Dashboard — Quiz</title>
 
-    body, html {
-      height: 100%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      background: linear-gradient(-45deg, #e5ccff, #d9a7c7, #a1c4fd, #c2e9fb);
-      background-size: 400% 400%;
-      animation: gradient 10s ease infinite;
-      color: #333;
-      transition: background 0.6s ease;
-      overflow: hidden;
-    }
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 
-    @keyframes gradient {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
-    }
+<style>
+  :root{
+    --bg1: #0f1724;
+    --violet: #6a11cb;
+    --blue: #2575fc;
+    --glass: rgba(255,255,255,0.06);
+    --muted: rgba(255,255,255,0.75);
+    --accent: #9d7bff;
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%;margin:0;font-family:'Poppins',system-ui,Arial;color:var(--muted);background:#07132a;}
 
-    /* ⚡ Lighting effect pulse */
-    @keyframes lighting {
-      0% { box-shadow: 0 0 10px #fff, 0 0 20px #a86eff, 0 0 40px #8a2be2; }
-      50% { box-shadow: 0 0 30px #fff, 0 0 60px #7a5fff, 0 0 120px #b57aff; }
-      100% { box-shadow: 0 0 10px #fff, 0 0 20px #a86eff, 0 0 40px #8a2be2; }
-    }
+/* Animated Violet-Blue gradient background */
+  body{
+    background: linear-gradient(120deg, #1f3b8a 0%, #4b1f86 30%, #1ea6ff 70%);
+    background-size:400% 400%;
+    animation: bgShift 14s ease infinite;
+    overflow:hidden;
+  }
+  @keyframes bgShift{
+    0%{background-position:0% 50%}
+    50%{background-position:100% 50%}
+    100%{background-position:0% 50%}
+  }
 
-    .container {
-      text-align: center;
-      background: rgba(255, 255, 255, 0.15);
-      backdrop-filter: blur(20px);
-      border-radius: 20px;
-      padding: 40px;
-      width: 90%;
-      max-width: 420px;
-      animation: lighting 3s infinite alternate;
-      transition: all 0.5s ease;
-    }
+/* Page layout */
+  .app {
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+  }
+  .topbar{
+    height:64px;
+    display:flex;
+    align-items:center;
+    gap:16px;
+    padding:0 20px;
+    background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    border-bottom:1px solid rgba(255,255,255,0.03);
+    backdrop-filter: blur(6px);
+    color:rgba(255,255,255,0.92);
+  }
+  .brand{
+    font-family:'Orbitron',sans-serif;
+    font-size:18px;
+    letter-spacing:1px;
+    color:#fff;
+  }
+  .top-actions{ margin-left:auto; display:flex; gap:10px; align-items:center; }
 
-    h1 {
-      font-size: 30px;
-      color: #4b0082;
-      font-weight: bold;
-      margin-bottom: 25px;
-      text-shadow: 0 0 15px #fff;
-    }
+  .main {
+    flex:1;
+    display:flex;
+    gap:22px;
+    padding:28px;
+    align-items:flex-start;
+    justify-content:center;
+  }
 
-    button {
-      background: linear-gradient(90deg, #7a5fff, #9d7bff);
-      border: none;
-      color: white;
-      padding: 12px 25px;
-      border-radius: 25px;
-      cursor: pointer;
-      font-size: 16px;
-      transition: 0.3s;
-      box-shadow: 0 0 15px rgba(122, 95, 255, 0.7);
-    }
-    button:hover {
-      transform: scale(1.07);
-      box-shadow: 0 0 25px rgba(155, 125, 255, 1);
-    }
+/* Sidebar */
+  .sidebar{
+    width:260px;
+    background:linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
+    border-radius:12px;
+    padding:18px;
+    box-shadow:0 12px 40px rgba(2,6,23,0.6);
+    border:1px solid rgba(255,255,255,0.03);
+    color:var(--muted);
+    height:520px;
+  }
+  .stat { margin-bottom:14px; }
+  .stat h3{ margin:0; font-size:14px; color:#fff; }
+  .stat p{ margin:6px 0 0; font-size:13px; color:rgba(255,255,255,0.8);}
 
-    .question {
-      font-size: 20px;
-      margin-bottom: 15px;
-      font-weight: 600;
-      color: #3c0066;
-    }
+/* Center dashboard area (quiz card) */
+  .workspace{
+    flex:1;
+    max-width:720px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
 
-    .options button {
-      display: block;
-      width: 100%;
-      margin: 10px 0;
-      background: #9370db;
-      color: white;
-      transition: all 0.3s ease;
-    }
-    .options button:hover {
-      background: #7a5fff;
-      transform: scale(1.03);
-    }
+  .quiz-card{
+    width:100%;
+    background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));
+    border-radius:14px;
+    padding:22px;
+    position:relative;
+    box-shadow: 0 18px 60px rgba(6,24,50,0.6);
+    border:1px solid rgba(255,255,255,0.04);
+    overflow:hidden;
+  }
 
-    .hidden { display: none; }
-    .result { font-size: 22px; font-weight: bold; color: #4b0082; }
-  </style>
+  /* neon border */
+  .quiz-card::before{
+    content:'';
+    position:absolute; inset:-2px;
+    border-radius:16px;
+    background: linear-gradient(90deg, rgba(157,123,255,0.12), rgba(0,224,255,0.09));
+    z-index:0;
+    filter: blur(22px);
+    pointer-events:none;
+    mix-blend-mode: screen;
+    opacity:0.9;
+  }
+
+  .panel{
+    position:relative; z-index:2;
+  }
+  .q-top{ display:flex; justify-content:space-between; align-items:center; gap:12px; color:rgba(255,255,255,0.9); }
+  .q-title{ margin-top:12px; font-size:20px; font-weight:700; color:#fff; }
+  .choices{ margin-top:14px; display:grid; gap:12px; grid-template-columns:1fr 1fr; }
+  @media(max-width:780px){ .choices{ grid-template-columns:1fr } .sidebar{display:none} }
+
+  .choice {
+    background:#fff;
+    color:#061424;
+    padding:12px;
+    border-radius:10px;
+    cursor:pointer;
+    font-weight:600;
+    box-shadow:0 8px 22px rgba(2,6,23,0.12);
+    transition: transform .12s, box-shadow .12s, background .12s;
+  }
+  .choice:hover{ transform: translateY(-4px); box-shadow:0 18px 40px rgba(2,6,23,0.18); }
+  .choice.selected{ background:linear-gradient(90deg,var(--accent), #7fd3ff); color:#021; box-shadow:0 20px 60px rgba(157,123,255,0.18); }
+
+  .controls{ display:flex; justify-content:space-between; align-items:center; margin-top:18px; gap:8px; }
+  .btn{ padding:10px 16px; border-radius:10px; border:0; cursor:pointer; font-weight:700; background:linear-gradient(90deg,var(--accent), #bca1ff); color:#041017; box-shadow:0 10px 30px rgba(157,123,255,0.12); }
+  .btn.ghost{ background:transparent; color:var(--muted); border:1px solid rgba(255,255,255,0.04); }
+
+  .result { margin-top:14px; display:none; color: #fff; }
+
+/* lighting spot */
+  .lighting { position:absolute; inset:0; pointer-events:none; z-index:1 }
+  .spot{
+    position:absolute;
+    width:600px; height:600px; border-radius:50%;
+    left:calc(50% - 300px); top:-180px;
+    background: radial-gradient(circle at 50% 40%, rgba(255,255,255,0.28), rgba(255,255,255,0.06) 20%, transparent 45%);
+    filter: blur(36px) saturate(1.05);
+    opacity:0; transform: scale(0.92);
+  }
+  @keyframes lightPulse { 0%{opacity:0; transform:scale(0.92)} 10%{opacity:0.78; transform:scale(1.02)} 60%{opacity:0.28; transform:scale(1.06)} 100%{opacity:0; transform:scale(1.12)} }
+
+  /* small UI */
+  .small{ font-size:13px; color:var(--muted) }
+  .top-stat{ display:flex; gap:12px; align-items:center }
+  .chip{ background:rgba(255,255,255,0.04); padding:6px 10px; border-radius:10px; font-weight:700; color:#fff; }
+
+</style>
 </head>
 <body>
-  <div class="container" id="start-screen">
-    <h1>BULK TRADE QUIZ</h1>
-    <button onclick="startQuiz()">Enter Quiz</button>
-  </div>
+  <div class="app">
+    <div class="topbar">
+      <div class="brand">Bulk Trade Dashboard</div>
+      <div class="top-actions">
+        <div class="chip">Live</div>
+        <div class="small">v1.0</div>
+      </div>
+    </div>
 
-  <div class="container hidden" id="quiz-screen">
-    <div id="quiz">
-      <div id="question-container" class="question"></div>
-      <div id="options-container" class="options"></div>
-      <button id="next-btn" onclick="nextQuestion()">Next</button>
+    <div class="main">
+      <!-- Sidebar -->
+      <aside class="sidebar" id="sidebar">
+        <div class="stat">
+          <h3>Progress</h3>
+          <p id="sidebar-progress">0 / 5 answered</p>
+        </div>
+        <div class="stat">
+          <h3>Best Score</h3>
+          <p id="sidebar-best">—</p>
+        </div>
+        <div class="stat">
+          <h3>Tips</h3>
+          <p>Use keys 1–4 for answers. Press Enter to move next.</p>
+        </div>
+        <div style="margin-top:auto; font-size:12px; color:rgba(255,255,255,0.6)">Made with ❤ by Basu</div>
+      </aside>
+
+      <!-- Workspace -->
+      <section class="workspace">
+        <div class="quiz-card" id="quizCard">
+          <div class="lighting"><div class="spot" id="spot"></div></div>
+          <div class="panel">
+            <div class="q-top">
+              <div class="small" id="q-count">Question 1 / 5</div>
+              <div class="small" id="score">Score: 0</div>
+            </div>
+
+            <div id="questionArea" style="margin-top:8px;">
+              <!-- injected -->
+              <div style="margin-top:16px; text-align:center; color:rgba(255,255,255,0.9)">
+                <h2 style="margin:0;color:#fff;font-family:'Orbitron',sans-serif">BULK TRADE QUIZ</h2>
+                <p class="small" style="margin-top:10px">Click Enter Quiz to start</p>
+                <div style="margin-top:18px">
+                  <button id="startBtn" class="btn">Enter Quiz</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="controls">
+              <div style="display:flex;gap:8px">
+                <button id="prevBtn" class="btn ghost">Previous</button>
+                <button id="skipBtn" class="btn ghost">Skip</button>
+              </div>
+              <div style="display:flex;gap:8px;align-items:center">
+                <div class="small" id="hint"></div>
+                <button id="nextBtn" class="btn">Next</button>
+              </div>
+            </div>
+
+            <div class="result" id="resultWrap"></div>
+          </div>
+        </div>
+      </section>
     </div>
   </div>
 
-  <div class="container hidden" id="result-screen">
-    <h2>Your Score:</h2>
-    <div class="result" id="score"></div>
-    <button onclick="restartQuiz()">Play Again</button>
-  </div>
+<script>
+/* Dashboard Edition — JS logic */
+/* Questions (5) */
+const QUESTIONS = [
+  { id:1, q:'What does \"bulk trade\" typically refer to?', choices:['Single-item retail orders','Large-quantity commodity shipments','Individual customer trades','Digital-only goods'], answer:1 },
+  { id:2, q:'Which document commonly accompanies a bulk shipment?', choices:['Invoice','Packing list','Warranty card','Coupon code'], answer:1 },
+  { id:3, q:'What is a Bill of Lading used for?', choices:['Prove ownership & shipment details','Calculate tariffs','Insurance valuation','Customer feedback'], answer:0 },
+  { id:4, q:'Which term indicates the buyer pays shipping?', choices:['FOB','CIF','EXW','DDP'], answer:2 },
+  { id:5, q:'Which metric indicates how well orders are fulfilled on time?', choices:['CTR','Fill rate','CPA','Bounce rate'], answer:1 }
+];
 
-  <script>
-    const questions = [
-      {
-        question: "What does FOB stand for in international trade?",
-        options: ["Free on Board", "Freight on Buy", "Fast on Business", "Free Order Basis"],
-        answer: "Free on Board"
-      },
-      {
-        question: "Which document is required for customs clearance?",
-        options: ["Invoice", "Bill of Lading", "Packing List", "All of the above"],
-        answer: "All of the above"
-      },
-      {
-        question: "What is the main purpose of a Letter of Credit?",
-        options: ["Reduce shipping time", "Ensure payment security", "Lower tariffs", "Simplify packing"],
-        answer: "Ensure payment security"
-      },
-      {
-        question: "Which currency is most commonly used for international trade?",
-        options: ["Euro", "Yen", "Dollar (USD)", "Pound"],
-        answer: "Dollar (USD)"
-      },
-      {
-        question: "What does Incoterms define?",
-        options: ["Trade rules and responsibilities", "Shipping company names", "Currency exchange rates", "Export taxes"],
-        answer: "Trade rules and responsibilities"
-      }
-    ];
+const GRADIENTS = [
+  'linear-gradient(120deg,#1f3b8a 0%, #4b1f86 30%, #1ea6ff 70%)',
+  'linear-gradient(120deg,#4b1f86 0%, #2575fc 50%, #6a11cb 90%)',
+  'linear-gradient(120deg,#2b0f6a 0%, #6a11cb 40%, #1ea6ff 90%)',
+  'linear-gradient(120deg,#1e3b72 0%, #4b1f86 40%, #7fd3ff 90%)',
+  'linear-gradient(120deg,#2b1a6b 0%, #6a11cb 50%, #2575fc 100%)'
+];
 
-    let currentQuestion = 0;
-    let score = 0;
+/* Element refs */
+const startBtn = document.getElementById('startBtn');
+const questionArea = document.getElementById('questionArea');
+const qCount = document.getElementById('q-count');
+const scoreEl = document.getElementById('score');
+const prevBtn = document.getElementById('prevBtn');
+const nextBtn = document.getElementById('nextBtn');
+const skipBtn = document.getElementById('skipBtn');
+const resultWrap = document.getElementById('resultWrap');
+const spot = document.getElementById('spot');
+const sidebarProgress = document.getElementById('sidebar-progress');
+const sidebarBest = document.getElementById('sidebar-best');
+const quizCard = document.getElementById('quizCard');
 
-    const startScreen = document.getElementById("start-screen");
-    const quizScreen = document.getElementById("quiz-screen");
-    const resultScreen = document.getElementById("result-screen");
-    const questionContainer = document.getElementById("question-container");
-    const optionsContainer = document.getElementById("options-container");
-    const scoreDisplay = document.getElementById("score");
+let idx=0, selected=null, score=0, reviewed=[];
 
-    const gradients = [
-      ["#ff9a9e", "#fad0c4"],
-      ["#a18cd1", "#fbc2eb"],
-      ["#84fab0", "#8fd3f4"],
-      ["#f6d365", "#fda085"],
-      ["#fccb90", "#d57eeb"]
-    ];
+/* SOUND: simple soft tones (use WebAudio) */
+const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+let audioCtx=null;
+function ensureAudio(){ if(audioCtx) return; audioCtx = new AudioContextClass(); }
+function playSoft(freq=880, dur=0.08, type='sine', vol=0.06){
+  try{
+    ensureAudio();
+    const o = audioCtx.createOscillator();
+    const g = audioCtx.createGain();
+    o.type = type; o.frequency.value = freq;
+    o.connect(g); g.connect(audioCtx.destination);
+    g.gain.setValueAtTime(0.0001, audioCtx.currentTime);
+    g.gain.linearRampToValueAtTime(vol, audioCtx.currentTime + 0.01);
+    g.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + dur + 0.02);
+    o.start(audioCtx.currentTime); o.stop(audioCtx.currentTime + dur + 0.03);
+  }catch(e){}
+}
 
-    function changeBackground() {
-      const bg = gradients[Math.floor(Math.random() * gradients.length)];
-      document.body.style.background = `linear-gradient(-45deg, ${bg[0]}, ${bg[1]}, #ffffff)`;
-      document.body.style.backgroundSize = "400% 400%";
-      document.body.style.animation = "gradient 8s ease infinite";
-    }
+/* render first screen (start) */
+startBtn.addEventListener('click', ()=> {
+  idx = 0; selected=null; score=0; reviewed=[];
+  document.body.style.background = GRADIENTS[idx%GRADIENTS.length];
+  renderQuestion();
+});
 
-    function flashLighting() {
-      document.body.style.transition = "background 0.3s ease";
-      document.body.style.filter = "brightness(1.6)";
-      setTimeout(() => {
-        document.body.style.filter = "brightness(1)";
-      }, 400);
-    }
+/* render question card */
+function renderQuestion(){
+  const q = QUESTIONS[idx];
+  qCount.textContent = `Question ${idx+1} / ${QUESTIONS.length}`;
+  scoreEl.textContent = `Score: ${score}`;
+  sidebarProgress.textContent = `${reviewed.length} / ${QUESTIONS.length} answered`;
 
-    function startQuiz() {
-      startScreen.classList.add("hidden");
-      quizScreen.classList.remove("hidden");
-      loadQuestion();
-    }
+  questionArea.innerHTML = `
+    <div>
+      <div class="q-title">${escapeHtml(q.q)}</div>
+      <div class="choices" id="choices">${q.choices.map((c,i)=> `<div class="choice" data-i="${i}" tabindex="0"><strong style="margin-right:8px">${i+1}.</strong>${escapeHtml(c)}</div>`).join('')}</div>
+    </div>
+  `;
 
-    function loadQuestion() {
-      changeBackground();
-      flashLighting();
-      const q = questions[currentQuestion];
-      questionContainer.textContent = q.question;
-      optionsContainer.innerHTML = "";
-      q.options.forEach(opt => {
-        const btn = document.createElement("button");
-        btn.textContent = opt;
-        btn.onclick = () => selectAnswer(opt);
-        optionsContainer.appendChild(btn);
-      });
-    }
+  // change BG gradient smooth
+  document.body.style.transition = 'background 0.9s ease';
+  document.body.style.background = GRADIENTS[idx % GRADIENTS.length];
 
-    function selectAnswer(answer) {
-      const correct = questions[currentQuestion].answer;
-      if (answer === correct) score++;
-      document.querySelectorAll(".options button").forEach(b => b.disabled = true);
-    }
+  // position and trigger spot pulse
+  positionSpot();
+  triggerPulse();
 
-    function nextQuestion() {
-      currentQuestion++;
-      if (currentQuestion < questions.length) {
-        loadQuestion();
-      } else {
-        showResult();
-      }
-    }
+  // hook choices
+  document.querySelectorAll('.choice').forEach(el=>{
+    el.addEventListener('click', ()=>{
+      document.querySelectorAll('.choice').forEach(c=>c.classList.remove('selected'));
+      el.classList.add('selected');
+      selected = parseInt(el.dataset.i,10);
+      playSoft(1100,0.08,'sine',0.04);
+    });
+    el.addEventListener('keydown',(e)=>{ if(e.key==='Enter' || e.key===' ') el.click(); });
+  });
+}
 
-    function showResult() {
-      quizScreen.classList.add("hidden");
-      resultScreen.classList.remove("hidden");
-      scoreDisplay.textContent = `${score} / ${questions.length}`;
-    }
+/* position spot near top of card with subtle variations */
+function positionSpot(){
+  const offsets = ['45%','50%','55%','48%','52%'];
+  const ys = ['-180px','-140px','-160px','-200px','-150px'];
+  spot.style.left = `calc(${offsets[idx % offsets.length]} - 300px)`;
+  spot.style.top = ys[idx % ys.length];
+}
 
-    function restartQuiz() {
-      score = 0;
-      currentQuestion = 0;
-      resultScreen.classList.add("hidden");
-      startScreen.classList.remove("hidden");
-    }
-  </script>
+/* trigger pulse */
+function triggerPulse(){
+  spot.style.animation = 'none';
+  void spot.offsetWidth;
+  spot.style.animation = 'lightPulse 1.2s ease forwards';
+}
+
+/* hooks for nav */
+nextBtn.addEventListener('click', onNext);
+prevBtn.addEventListener('click', onPrev);
+skipBtn.addEventListener('click', onSkip);
+
+function onNext(){
+  const cur = QUESTIONS[idx];
+  if(selected !== null){
+    const correct = selected === cur.answer;
+    reviewed.push({id:cur.id, selected, correct});
+    if(correct){ score++; playSoft(1320,0.16,'triangle',0.06); }
+    else { playSoft(220,0.16,'sine',0.05); }
+  } else {
+    reviewed.push({id:cur.id, selected:null, correct:false});
+  }
+  selected = null;
+  idx++;
+  if(idx >= QUESTIONS.length){ showResult(); return; }
+  renderQuestion();
+}
+
+function onPrev(){
+  if(idx===0) return;
+  if(reviewed.length) reviewed.pop();
+  idx--; selected=null; renderQuestion();
+}
+function onSkip(){
+  reviewed.push({id:QUESTIONS[idx].id, selected:null, correct:false});
+  idx++; if(idx>=QUESTIONS.length){ showResult(); return; } renderQuestion();
+}
+
+/* show result */
+function showResult(){
+  // small success sound
+  playSoft(880,0.18,'triangle',0.08);
+  // calculate
+  const correctCount = reviewed.filter(r=>r.correct).length;
+  document.body.style.background = 'linear-gradient(120deg,#0f7a5a,#2575fc)';
+  resultWrap.style.display='block';
+  resultWrap.innerHTML = `
+    <div style="margin-top:12px;color:#fff;font-weight:800;font-size:18px">${correctCount} / ${QUESTIONS.length}</div>
+    <div class="small" style="margin-top:6px">${correctCount === QUESTIONS.length ? 'Perfect!' : (correctCount >= Math.ceil(QUESTIONS.length*0.7) ? 'Nice work!' : 'Keep practicing.')}</div>
+    <div style="margin-top:12px"><button id="retryBtn" class="btn">Retry</button> <button id="exportBtn" class="btn ghost">Export JSON</button></div>
+    <div style="margin-top:12px"><div style="font-weight:700;margin-bottom:8px">Review</div>
+      ${QUESTIONS.map((q,i=>{
+        const r = reviewed.find(x=>x.id===q.id) || {selected:null, correct:false};
+        const your = r.selected===null ? '<em>Skipped</em>' : q.choices[r.selected];
+        return `<div class="review-item"><div style="display:flex;justify-content:space-between"><div><strong>Q${i+1}.</strong> ${escapeHtml(q.q)}</div><div style="text-align:right">${your}</div></div><div class="small" style="margin-top:6px;color:rgba(255,255,255,0.8)">Correct: ${escapeHtml(q.choices[q.answer])}</div></div>`;
+      })).join('')}
+    </div>
+  `;
+  // update sidebar best score locally
+  const prevBest = parseInt(localStorage.getItem('bulk_best')||'0',10);
+  if(correctCount > prevBest){ localStorage.setItem('bulk_best', correctCount); sidebarBest.textContent = `${correctCount} / ${QUESTIONS.length}`; }
+  else { sidebarBest.textContent = prevBest ? `${prevBest} / ${QUESTIONS.length}` : '—'; }
+
+  // actions
+  document.getElementById('retryBtn').addEventListener('click', ()=>{
+    resultWrap.style.display='none';
+    idx=0; selected=null; score=0; reviewed=[]; renderQuestion();
+  });
+  document.getElementById('exportBtn').addEventListener('click', ()=>{
+    const data = {score: correctCount, total: QUESTIONS.length, reviewed, date: new Date().toISOString()};
+    const b = new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+    const url = URL.createObjectURL(b); const a=document.createElement('a'); a.href=url; a.download='bulk-quiz-result.json'; a.click(); URL.revokeObjectURL(url);
+  });
+}
+
+/* keyboard */
+window.addEventListener('keydown',(e)=>{
+  // if quiz not started and Enter pressed, start
+  const startVisible = document.getElementById('startBtn') && document.getElementById('startBtn').offsetParent !== null;
+  if(startVisible){
+    if(e.key==='Enter') document.getElementById('startBtn').click();
+    return;
+  }
+  if(e.key>='1' && e.key<='9'){
+    const n = parseInt(e.key,10)-1;
+    const choices = document.querySelectorAll('.choice');
+    if(choices[n]) choices[n].click();
+  }
+  if(e.key==='Enter'){ nextBtn.click(); }
+});
+
+/* small helper */
+function escapeHtml(s){ return (''+s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+/* init: set best from local */
+(function init(){
+  const pb = localStorage.getItem('bulk_best');
+  sidebarBest.textContent = pb ? `${pb} / ${QUESTIONS.length}` : '—';
+})();
+</script>
 </body>
 </html>
